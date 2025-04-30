@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm run test:prod
-      - run: cp dist/food-p/index.html dist/food-p/404.html
+      - run: cp dist/food-p/browser/index.html dist/food-p/browser/404.html
       - name: Deploy with gh-pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
