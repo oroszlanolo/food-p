@@ -1,10 +1,10 @@
-@if(loggedIn) {
-    <button mat-icon-button [matMenuTriggerFor]="belowMenu">
-        <img class="user-icon" [src]="user?.picture" />
-    </button>
-    <mat-menu #belowMenu="matMenu" yPosition="below">
-        <button mat-menu-item (click)="logout()">Logout</button>
-    </mat-menu>
+@if (loggedIn) {
+  <button mat-icon-button [matMenuTriggerFor]="belowMenu">
+    <img class="user-icon" [src]="user?.picture" alt="User Icon" />
+  </button>
+  <mat-menu #belowMenu="matMenu" yPosition="below">
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
 } @else {
-    <div id="google-btn"></div>
+  <div id="google-btn"></div>
 }

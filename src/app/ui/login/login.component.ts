@@ -1,17 +1,18 @@
-declare var google: any;
-import { Component, inject, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare let google: any;
 import { CommonModule } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, MatMenuModule, MatButtonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
   private userService = inject(UserService);
@@ -24,7 +25,7 @@ export class LoginComponent implements OnInit {
   showLogoutBtn = false;
 
   ngOnInit(): void {
-    if(this.userService.googleReady) {
+    if (this.userService.googleReady) {
       this.createLoginBtn();
     } else {
       this.userService.googleReadyEvt.subscribe(() => this.createLoginBtn());
@@ -44,13 +45,13 @@ export class LoginComponent implements OnInit {
   }
 
   private createLoginBtn() {
-    if(!this.userService.loggedIn) {
-        google.accounts.id.renderButton(document.getElementById('google-btn'), {
+    if (!this.userService.loggedIn) {
+      google.accounts.id.renderButton(document.getElementById('google-btn'), {
         text: 'signin',
         theme: 'filled_black',
         size: 'medium',
         shape: 'pill',
-        locale: 'en_us'
+        locale: 'en_us',
       });
     }
   }

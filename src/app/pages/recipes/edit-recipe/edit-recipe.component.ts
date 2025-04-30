@@ -15,7 +15,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { getDefaultRecipe, Recipe } from '../../../../models/recipe.model';
-import { DishTypePipe } from '../../../pipes/dish-type.pipe';
 import { FoodPropertyService } from '../../../services/food-property.service';
 import { FoodService } from '../../../services/food.service';
 import { ImageService } from '../../../services/image.service';
@@ -34,7 +33,6 @@ import { FormGroupControls, IngredientControls } from './recipe-form.model';
     ReactiveFormsModule,
     NgClass,
     TitleCasePipe,
-    DishTypePipe,
     AsyncPipe,
     MatButtonModule,
     MatFormFieldModule,

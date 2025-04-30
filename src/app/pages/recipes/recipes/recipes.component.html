@@ -1,19 +1,19 @@
-
 <div class="search-container">
-    <app-recipe-search (search)="onSearch($event)"></app-recipe-search>
+  <app-recipe-search (searchHappened)="onSearch($event)"></app-recipe-search>
 </div>
 <div class="recipes-grid">
-    @for (recipe of recipes(); track recipe.name) {
-        <app-recipe-card [recipe]="recipe"></app-recipe-card>
-    }
+  @for (recipe of recipes(); track recipe.name) {
+    <app-recipe-card [recipe]="recipe"></app-recipe-card>
+  }
 </div>
-<mat-paginator #paginator
-               class="paginator"
-               (page)="setPage($event.pageIndex)"
-               [length]="totalCount()"
-               [pageSize]="pageSize()"
-               [showFirstLastButtons]="true"
-               [hidePageSize]="true"
-               [pageIndex]="page() - 1"
-               aria-label="Select page">
+<mat-paginator
+  #paginator
+  class="paginator"
+  (page)="setPage($event.pageIndex)"
+  [length]="totalCount()"
+  [pageSize]="pageSize()"
+  [showFirstLastButtons]="true"
+  [hidePageSize]="true"
+  [pageIndex]="page() - 1"
+  aria-label="Select page">
 </mat-paginator>

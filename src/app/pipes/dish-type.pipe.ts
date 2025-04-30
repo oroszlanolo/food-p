@@ -1,35 +1,32 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DishType } from '../../models/recipe.model';
 
 @Pipe({
-    name: 'dishType',
-    standalone: true
+  name: 'dishType',
+  standalone: true,
 })
 export class DishTypePipe implements PipeTransform {
-
   transform(tp: string): string {
-    switch(tp) {
+    switch (tp) {
       case 'cold_appetizer':
-          return "Cold Appetizer";
+        return 'Cold Appetizer';
       case 'warm_appetizer':
-          return "Warm Appetizer";
+        return 'Warm Appetizer';
       case 'amuse_bouche':
-          return "Amuse Bouche";
+        return 'Amuse Bouche';
       case 'dessert':
-          return "Dessert";
+        return 'Dessert';
       case 'garnish':
-          return "Garnish";
+        return 'Garnish';
       case 'main_dish':
-          return "Main Dish";
+        return 'Main Dish';
       case 'soup':
-          return "Soup";
+        return 'Soup';
       case 'drink':
-          return "Drink";
+        return 'Drink';
       case 'other_course':
-          return "Other";
+        return 'Other';
       default:
-          return "Other";
+        return 'Other';
     }
   }
-
 }

@@ -1,21 +1,21 @@
-import { Component, OnInit, computed, effect, signal } from '@angular/core';
-import { FoodService } from '../../../services/food.service';
+import { ViewportScroller } from '@angular/common';
+import { Component, OnInit, computed, signal } from '@angular/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { environment } from '../../../../environments/environment';
-import { NgFor, NgIf, TitleCasePipe, ViewportScroller } from '@angular/common';
-import { RecipeSearchComponent } from '../recipe-search/recipe-search.component';
-import { RecipeCardComponent } from '../../../ui/recipe-card/recipe-card.component';
 import { Recipe } from '../../../../models/recipe.model';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import { SearchQuery } from '../../../../models/search-query.model';
+import { FoodService } from '../../../services/food.service';
+import { RecipeCardComponent } from '../../../ui/recipe-card/recipe-card.component';
+import { RecipeSearchComponent } from '../recipe-search/recipe-search.component';
 
 @Component({
-    selector: 'app-recipes',
-    templateUrl: './recipes.component.html',
-    styleUrls: ['./recipes.component.scss'],
-    standalone: true,
-    imports: [RecipeSearchComponent, NgFor, NgIf, TitleCasePipe, RecipeCardComponent, MatPaginatorModule]
+  selector: 'app-recipes',
+  templateUrl: './recipes.component.html',
+  styleUrls: ['./recipes.component.scss'],
+  standalone: true,
+  imports: [RecipeSearchComponent, RecipeCardComponent, MatPaginatorModule],
 })
-export class RecipesComponent implements OnInit{
+export class RecipesComponent implements OnInit {
   recipeServerUrl = environment.serverPath;
   query: SearchQuery = {};
   pageSize = signal(9);
@@ -27,7 +27,10 @@ export class RecipesComponent implements OnInit{
   hasPrev = computed(() => this.page() > 1);
   hasNext = computed(() => this.page() < this.totalPages());
 
-  constructor(private foodService: FoodService, private scroller: ViewportScroller) {}
+  constructor(
+    private foodService: FoodService,
+    private scroller: ViewportScroller,
+  ) {}
 
   ngOnInit(): void {
     this.updateRecipes();
@@ -39,7 +42,7 @@ export class RecipesComponent implements OnInit{
   }
   setPage(idx: number) {
     idx = idx + 1; // server indexes from 1, paginator indexes from 0
-    if(idx > 0 && idx <= this.totalPages() && !this.loading()) {
+    if (idx > 0 && idx <= this.totalPages() && !this.loading()) {
       this.page.set(idx);
       this.updateRecipes();
       this.scroller.scrollToPosition([0, 0]);
@@ -51,7 +54,7 @@ export class RecipesComponent implements OnInit{
     this.query.page = this.page();
     this.query.pageSize = this.pageSize();
     console.log(this.query);
-    this.foodService.getRecipes(this.query).subscribe(res => {
+    this.foodService.getRecipes(this.query).subscribe((res) => {
       this.loading.set(false);
       this.recipes.set(res.recipes.data);
       this.totalCount.set(res.recipes.metadata.totalCount);

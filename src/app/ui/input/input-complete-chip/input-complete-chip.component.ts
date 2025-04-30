@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, computed, DestroyRef, forwardRef, inject, input, model, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -9,24 +11,18 @@ import { FoodPropertyService } from '../../../services/food-property.service';
 @Component({
   selector: 'app-input-complete-chip',
   standalone: true,
-  imports: [FormsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatChipsModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule
-  ],
+  imports: [FormsModule, MatFormFieldModule, MatIconModule, MatChipsModule, MatAutocompleteModule, ReactiveFormsModule],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputCompleteChipComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
   templateUrl: './input-complete-chip.component.html',
-  styleUrl: './input-complete-chip.component.scss'
+  styleUrl: './input-complete-chip.component.scss',
 })
-export class InputCompleteChipComponent implements ControlValueAccessor, OnInit{
+export class InputCompleteChipComponent implements ControlValueAccessor, OnInit {
   inputLabel = input('Labels');
   listName = input('labels');
 
@@ -37,29 +33,28 @@ export class InputCompleteChipComponent implements ControlValueAccessor, OnInit{
   onChange: any = (value: any) => {};
   onTouched: any = () => {};
 
-  availableLabels : string[] = [];
+  availableLabels: string[] = [];
   readonly currentLabel = model('');
   readonly filteredLabels = computed(() => {
-    const filteredByLabels = this.availableLabels.filter(label => !this.value?.includes(label));
+    const filteredByLabels = this.availableLabels.filter((label) => !this.value?.includes(label));
     const currentLabel = this.currentLabel().toLowerCase();
     return currentLabel
-      ? filteredByLabels.filter(label => label.toLowerCase().includes(currentLabel))
+      ? filteredByLabels.filter((label) => label.toLowerCase().includes(currentLabel))
       : filteredByLabels.slice();
   });
 
   ngOnInit(): void {
-      const sub = this.foodPropertyService.getList(this.listName()).subscribe(labels => {
-        this.availableLabels = labels;
-      });
-      this.destroyRef.onDestroy(() => sub.unsubscribe());
+    const sub = this.foodPropertyService.getList(this.listName()).subscribe((labels) => {
+      this.availableLabels = labels;
+    });
+    this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
 
-  
   add(event: MatChipInputEvent): void {
     const valueToAdd = (event.value || '').trim().toLowerCase();
 
     if (valueToAdd) {
-      if(!this.value.includes(valueToAdd)) {
+      if (!this.value.includes(valueToAdd)) {
         this.updateValue([...this.value, valueToAdd]);
       }
     }
@@ -70,7 +65,7 @@ export class InputCompleteChipComponent implements ControlValueAccessor, OnInit{
     const filteredLabels = this.value.filter((l: string) => l !== label);
     this.updateValue(filteredLabels);
   }
-  
+
   selected(event: MatAutocompleteSelectedEvent): void {
     if (this.value) {
       this.updateValue([...this.value, event.option.viewValue]);
@@ -78,7 +73,7 @@ export class InputCompleteChipComponent implements ControlValueAccessor, OnInit{
     this.currentLabel.set('');
     event.option.deselect();
   }
-  
+
   writeValue(obj: any): void {
     this.value = obj;
     this.onTouched();
