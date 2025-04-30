@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { InputCompleteComponent } from './input-complete.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 describe('InputCompleteComponent', () => {
   let component: InputCompleteComponent;
@@ -8,7 +10,11 @@ describe('InputCompleteComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InputCompleteComponent]
+      imports: [InputCompleteComponent],
+        providers: [
+          provideHttpClient(),
+          provideAnimationsAsync(),
+        ],
     })
     .compileComponents();
 

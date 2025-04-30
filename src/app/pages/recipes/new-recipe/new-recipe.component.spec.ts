@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NewRecipeComponent } from './new-recipe.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 describe('NewRecipeComponent', () => {
   let component: NewRecipeComponent;
@@ -8,7 +10,11 @@ describe('NewRecipeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NewRecipeComponent]
+      imports: [NewRecipeComponent],
+      providers: [
+        provideHttpClient(),
+        provideAnimationsAsync(),
+      ],
     })
     .compileComponents();
 

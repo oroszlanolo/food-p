@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RecipesComponent } from './recipes.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 describe('RecipesComponent', () => {
   let component: RecipesComponent;
@@ -8,7 +10,11 @@ describe('RecipesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RecipesComponent]
+      imports: [RecipesComponent],
+      providers: [
+        provideHttpClient(),
+        provideAnimationsAsync(),
+      ],
     })
     .compileComponents();
 
