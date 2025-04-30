@@ -1,0 +1,82 @@
+
+<div>
+    <h1>Shopping list</h1>
+    <form #addItemForm="ngForm" (ngSubmit)="onAddItem(addItemForm)" class="add-item-row">
+        <mat-form-field appearance="outline" class="quantity-input">
+            <mat-label>Quantity</mat-label>
+            <input matInput name="quantity" type="number" ngModel placeholder="1">
+        </mat-form-field>
+        <app-input-complete
+            class="unit-input"
+            ngModel
+            name="unit"
+            listName="units"
+            inputLabel="Unit"
+            />
+        <app-input-complete
+            class="name-input"
+            ngModel name="name"
+            listName="ingredients"
+            inputLabel="Name"
+            />
+        <button mat-fab extended type="submit" [disabled]="addItemForm.controls['name'] && addItemForm.controls['name'].invalid">
+            @if(loading) {
+                <mat-spinner diameter="20"></mat-spinner>
+            }@else {
+                <span >Add</span>
+            }
+        </button>
+    </form>
+    <div class="shopping-list-container">
+        <div class="list-title-row">
+            <h2 class="text-xl font-bold">Remaining</h2>
+            <button
+                mat-icon-button
+                aria-label="share"
+                matTooltip="Share"
+                (click)="share()"
+                [disabled]="shoppingList.length === 0">
+                <mat-icon>share</mat-icon>
+            </button>
+        </div>
+        <ul class="list">
+            @for(item of shoppingList; track item._id) {
+                <li class="list-item">
+                    <button class="list-item-btn" (click)="completeItem(item)">
+                        <span>
+                            {{(item.quantity || '') + ' ' + (item.unit || '') + ' '}}
+                            <span class="item-name">{{item.name}}</span>
+                        </span>
+                    </button>
+                </li>
+            }
+        </ul>
+
+        <div class="list-title-row">
+            <h2 class="text-xl font-bold">Completed</h2>
+            <button
+                mat-icon-button
+                aria-label="Clear completed"
+                matTooltip="Clear completed"
+                (click)="clearCompleted()"
+                [disabled]="completedList.length === 0">
+                <mat-icon>remove_done</mat-icon>
+            </button>
+        </div>
+        <ul class="list">
+            @for(item of completedList; track item._id) {
+                <li  class="list-item done" >
+                    <button class="list-item-btn" (click)="uncompleteItem(item)">
+                        <mat-icon>
+                            task_alt
+                        </mat-icon>
+                        <span class="done-text">{{(item.quantity || '') + ' ' + (item.unit || '') + ' ' + item.name}}</span>
+                        <mat-icon>
+                            undo
+                        </mat-icon>
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

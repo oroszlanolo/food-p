@@ -1,0 +1,17 @@
+<mat-form-field class="form-field" appearance="outline">
+    <mat-label>{{inputLabel()}}</mat-label>
+    <input type="text"
+           aria-label="Unit"
+           matInput
+           [(ngModel)]="value"
+           [ngModelOptions]="{standalone: true}"
+           [matAutocomplete]="autoUnit"
+           (input)="valueChanged($event)"
+           (focus)="valueChanged($event)"
+           >
+    <mat-autocomplete autoActiveFirstOption #autoUnit="matAutocomplete">
+      @for (option of filteredValueOptions(); track option) {
+        <mat-option [value]="option">{{option}}</mat-option>
+      }
+    </mat-autocomplete>
+</mat-form-field>

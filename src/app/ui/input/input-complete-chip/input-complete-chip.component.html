@@ -1,0 +1,54 @@
+<mat-form-field class="labels">
+    <mat-label>{{inputLabel()}}</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Label selection" [(ngModel)]="value">
+      @for (label of value; track label) {
+        <mat-chip-row (removed)="remove(label)">
+          {{label}}
+          <button matChipRemove [attr.aria-label]="'remove ' + label">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      name="Labels"
+      [(ngModel)]="currentLabel"
+      [ngModelOptions]="{standalone: true}"
+      [matChipInputFor]="chipGrid"
+      [matAutocomplete]="auto"
+      (matChipInputTokenEnd)="add($event)"
+    />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      @for (label of filteredLabels(); track label) {
+        <mat-option [value]="label">{{label}}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+
+  
+                            <!-- <mat-form-field class="labels">
+                                <mat-label>Labels</mat-label>
+                                <mat-chip-grid #chipGrid aria-label="Label selection" formControlName="labels">
+                                  @for (label of labelsArray; track label) {
+                                    <mat-chip-row (removed)="remove(label)">
+                                      {{label}}
+                                      <button matChipRemove [attr.aria-label]="'remove ' + label">
+                                        <mat-icon>cancel</mat-icon>
+                                      </button>
+                                    </mat-chip-row>
+                                  }
+                                </mat-chip-grid>
+                                <input
+                                  name="Labels"
+                                  [(ngModel)]="currentLabel"
+                                  [ngModelOptions]="{standalone: true}"
+                                  [matChipInputFor]="chipGrid"
+                                  [matAutocomplete]="auto"
+                                  (matChipInputTokenEnd)="add($event)"
+                                />
+                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                  @for (label of filteredLabels(); track label) {
+                                    <mat-option [value]="label">{{label}}</mat-option>
+                                  }
+                                </mat-autocomplete>
+                              </mat-form-field> -->

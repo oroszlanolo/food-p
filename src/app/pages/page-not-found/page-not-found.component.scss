@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 60px;
+    gap: 40px;
+    .img {
+        border-radius: 50%;
+        width: 40%;
+    }
+    @media(max-width: 600px) {
+        flex-direction: column;
+        .img {
+            width: 80%;
+            order: 2;
+        }
+    }
+}

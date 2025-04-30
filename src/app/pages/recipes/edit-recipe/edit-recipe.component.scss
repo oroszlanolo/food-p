@@ -1,0 +1,198 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    margin-top: 15px;
+    // align-items: center;
+    @media(width < 600px) {
+        flex-direction: column;
+    }
+    .name {
+        width: 500px;
+        @media(width < 600px) {
+            width: 100%;
+        }
+    }
+    .action-buttons {
+        display: flex;
+        gap: 5px;
+        margin-right: 5px;
+        margin-top: 10px;
+        @media(width < 600px) {
+            justify-content: center;
+        }
+    }
+}
+
+.need-log-in {
+    font-size: .825rem;
+    line-height: 80%;
+    margin-top: -0.825rem;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+.tab-icon {
+    margin-right: 8px;
+}
+
+.overview-content {
+    padding-top: 10px;
+    display: grid;
+    grid-template-columns: 1fr minmax(200px, 400px);
+    gap: 20px;
+    @media(width < 600px) {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+}
+
+.url-input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.min-label {
+    margin-right: 5px;
+}
+
+.overview-left-side {
+    .image-container {
+        --img-w: 150px;
+        --img-h: 100px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-block: 10px;
+
+        .uploaded-image {
+            width: var(--img-w);
+            height: var(--img-h);
+        }
+
+        .upload-button-outline {
+            display: grid;
+            place-items: center;
+            width: var(--img-w);
+            height: var(--img-h);
+            border: 1px solid black;
+        }
+    }
+
+    .selects {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        @media(width < 600px) {
+            grid-template-columns: 1fr;
+        }
+        .select {
+            width: 100%;
+        }
+    }
+    .labels {
+        grid-column: span 2;
+        @media(width < 600px) {
+            grid-column: span 1;
+        }
+    }
+}
+
+.time-and-cooking {
+    background-color: mat.get-theme-color(theme.$theme, primary, 90);
+    padding: 15px;
+    border-radius: 5px;
+    align-self: start;
+    h2 {
+        margin-block: 15px;
+    }
+    .time-and-cooking-input {
+        width: 100%;
+    }
+    .temperature {
+        margin-top: 30px;
+    }
+}
+
+.section-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    .section-buttons {
+        padding-top: 10px;
+    }
+    .new-section-part {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+    .add-section-btn-container {
+        padding-top: 10px;
+    }
+    @media(width < 600px) {
+        flex-direction: column;
+        .spacer {
+            display: none;
+        }
+        .new-section-part {
+            width: 100%;
+        }
+        .new-section-input {
+            width: 100%;
+        }
+        .section-name-input {
+            width: 100%;
+        }
+        .section-header-btn {
+            margin-top: -20px;
+        }
+    }
+}
+// ingredients
+.ingredients-content {
+    .ingredients-list {
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+    .ingredient-row {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        .quantity {
+            width: 100px;
+        }
+        .unit {
+            width: 150px;
+        }
+        .ingredient-buttons {
+            padding-top: 10px;
+        }
+    }
+}
+
+.directions-content {
+    .add-direction-button {
+        margin: auto;
+    }
+    .direction-row {
+        display: flex;
+        gap: 10px;
+        .direction {
+            width: 100%;
+        }
+        @media(width < 600px) {
+            flex-direction: column;
+            gap: 0;
+            margin-bottom: 20px;
+            .direction-buttons {
+                flex-direction: row;
+                gap: 10px;
+            }
+        }
+    }
+}

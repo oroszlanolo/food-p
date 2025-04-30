@@ -1,0 +1,84 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header class="header">
+<div class="search-container" >
+  <mat-form-field class="search-input" appearance="outline" (click)="stopPropagation($event)">
+    <mat-label>Name</mat-label>
+    <input
+      matInput
+      type="text"
+      [(ngModel)]="searchString"
+      (click)="stopPropagation($event)"
+      (keyup.enter)="doSearch($event)"
+      [disabled]="ingredients().length > 0"
+      />
+    @if (searchString()) {
+    <button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="searchString.set('')"
+      [disabled]="ingredients().length > 0"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+  </mat-form-field>
+  <button
+    class="search-button"
+    mat-stroked-button (click)="doSearch($event)"
+    [matBadge]="additionalFilterCount()"
+    [matBadgeHidden]="additionalFilterCount() === 0"
+    matBadgePosition="above"
+    >
+    <mat-icon>search</mat-icon>
+    Search
+  </button>
+</div>
+</mat-expansion-panel-header>
+<div class="advanced-container"> 
+  
+  <app-input-complete-chip class="ingredient-input" [(ngModel)]="ingredients" inputLabel="Ingredients" listName="ingredients"/>
+
+  <mat-form-field>
+    <mat-label>Difficulty</mat-label>
+    <mat-select [(ngModel)]="difficulty">
+    <mat-option value="">-</mat-option>
+    <mat-option value="easy">Easy</mat-option>
+    <mat-option value="intermediate">Intermediate</mat-option>
+    <mat-option value="expert">Expert</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field class="select">
+    <mat-label>Dish Type</mat-label>
+    <mat-select multiple [(ngModel)]="dishType">
+      @for (dType of (availableDishTypes | async); track dType) {
+        <mat-option  [value]="dType">{{dType}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  
+  <mat-form-field class="select">
+    <mat-label>When</mat-label>
+    <mat-select multiple [(ngModel)]="when">
+      @for (when of (availableWhens | async); track when) {
+        <mat-option  [value]="when">{{when | titlecase}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field class="select">
+    <mat-label>Allergens</mat-label>
+    <mat-select multiple [(ngModel)]="allergens">
+      @for (allergen of (availableAllergens | async); track allergen) {
+        <mat-option  [value]="allergen">{{allergen | titlecase}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <app-input-complete-chip class="label-input" [(ngModel)]="labels" inputLabel="Labels" listName="labels"/>
+
+
+</div>
+</mat-expansion-panel>

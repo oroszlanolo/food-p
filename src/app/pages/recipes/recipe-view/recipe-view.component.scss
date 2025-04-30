@@ -1,0 +1,171 @@
+@use '@angular/material' as mat;
+@use '../../../../theme' as theme;
+
+.recipe-container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    gap: 25px;
+
+    @media(width < 600px) {
+        grid-template-columns: 1fr;
+    }
+
+    .ingredients-part {
+        grid-row: span 2;
+    }
+}
+
+.hero {
+    .title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .main-image {
+        width: 100%;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
+        }
+    }
+    .placeholder-image {
+        width: 50%;
+        margin: auto;
+    }
+
+    .quick-info-section {
+        margin-block: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+
+        .quick-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .quick-info-text {
+            font-weight: 500;
+        }
+
+        .quick-info-icon {
+            --size: 2.5rem;
+            font-size: var(--size);
+            height: var(--size);
+            width: var(--size);
+            color: mat.get-theme-color(theme.$theme, primary, 40);
+    }
+    }
+    
+}
+
+.ingredients-part {
+    .actions-menu {
+        display: flex;
+        justify-content: end;
+        width: 100%;
+    }
+
+    .serving-part {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-block: 10px;
+        @media(width > 600px) {
+            margin-top: 30px
+        }
+        .serving-label {
+            font-size: 1.5rem;
+        }
+        .serving-text {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    }
+
+    .ingredients-title {
+        
+        color: mat.get-theme-color(theme.$theme, primary, 40);
+    }
+
+    .section {
+        font-size: 1.125rem;
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            line-height: 25%;
+            margin-top: 25px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 10px;
+            input {
+                margin-right: 8px;
+            }
+            li > * {
+                cursor: pointer;
+            }
+            li > label > span {
+                margin-right: 3px;
+            }
+            .ingredient-name {
+                font-weight: 500;
+                color: mat.get-theme-color(theme.$theme, tertiary, 60);
+            }
+        }
+    }
+}
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    .shopping-list-button {
+        grid-column: span 2;
+    }
+}
+
+.directions-part {
+    margin-block-end: 40px;
+    .directions-title {
+        color: mat.get-theme-color(theme.$theme, primary, 40);
+        font-weight: bold;
+    }
+    .section-title {
+        font-weight: 500;
+    }
+    .step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+        margin-top: 10px;
+        align-items: start;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+
+        .step-text {
+            font-size: 1.125rem;
+            margin: 0;
+        }
+
+        .step-number {
+            width: 30px;
+            display: grid;
+            place-items: center;
+            aspect-ratio: 1;
+            background-color: mat.get-theme-color(theme.$theme, neutral, 40);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;;
+        }
+
+        &:hover ,
+        &.selected {
+            background-color: mat.get-theme-color(theme.$theme, neutral, 90);
+        }
+    }
+
+}

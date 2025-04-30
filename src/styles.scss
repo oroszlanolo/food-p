@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@use 'theme' as theme;
+@import 'reset';
+
+@include mat.core();
+
+html {
+
+    @include mat.all-component-themes(theme.$theme);
+}
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+    white-space: nowrap;
+}
+
+.error {
+    color: red;
+}
+
+div.center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

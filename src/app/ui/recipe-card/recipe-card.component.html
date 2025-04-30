@@ -1,0 +1,30 @@
+<mat-card class="recipe-card" appearance="outlined">
+  @if(recipe().images.length > 0) {
+  <img
+    mat-card-image
+    src="{{
+      recipeServerUrl + 'api/image?id=' + recipe().images[0] + '&size=small'
+    }}"
+    alt="Photo of {{ recipe().name }}"
+  />
+  } @else {
+  <img
+    mat-card-image
+    src="assets/penguin-fish.jpg"
+    alt="Photo of {{ recipe().name }}"
+  />
+  }
+  <mat-card-content class="title">
+    <a routerLink="/recipe/{{recipe()._id}}" ><h3>{{ recipe().name }}</h3></a>
+  </mat-card-content>
+  <mat-card-footer class="card-footer">
+    <mat-chip-set aria-label="Chihuahua traits">
+      <mat-chip>{{ recipe().difficulty | titlecase }}</mat-chip>
+      @if(recipe().preparationTime.summary) {
+      <mat-chip>{{ recipe().preparationTime.summary | titlecase }}</mat-chip>
+      } @for(label of recipe().labels; track label) {
+      <mat-chip>{{ label | titlecase }}</mat-chip>
+      }
+    </mat-chip-set>
+  </mat-card-footer>
+</mat-card>

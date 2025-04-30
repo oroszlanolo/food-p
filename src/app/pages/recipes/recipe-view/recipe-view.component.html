@@ -1,0 +1,105 @@
+@if(recipe) {
+    <div class="recipe-container">
+        <div class="hero">
+            <h1 class="title">{{recipe.name}}</h1>
+            @if(recipe.images.length > 0) {
+                <img class="main-image" (click)="viewImages()" src="{{recipeServerUrl + 'api/image?id=' + recipe.images[0] + '&size=medium'}}" alt="Image of {{recipe.name}} image">
+            } @else {
+                <img class="placeholder-image" src="assets/penguin-klos-white.png" alt="{{recipe.name}} image">
+            }
+            <div class="quick-info-section">
+                <div class="quick-info">
+                    <mat-icon class="quick-info-icon">schedule</mat-icon>
+                    <span class="quick-info-text">
+                        {{recipe.preparationTime.total}} min
+                    </span>
+                </div>
+                <div class="quick-info">
+                    <mat-icon class="quick-info-icon">speed</mat-icon>
+                    <span class="quick-info-text">
+                        {{recipe.difficulty | titlecase}}
+                    </span>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+        <div class="ingredients-part">
+            <div class="actions-menu">
+                <button mat-icon-button aria-label="Edit button" (click)="edit()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button aria-label="Delete button" [disabled]="!loggedIn" (click)="delete()">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+            @if(serving !== undefined) {
+                <div class="serving-part">
+                    <span class="serving-label">Serving:</span>
+                    <button mat-icon-button aria-label="Decrease serving by one" [disabled]="serving <= 1" (click)="decreaseServing()">
+                        <mat-icon>remove</mat-icon>
+                    </button>
+                    <span class="serving-text">{{serving | number:'1.0-1'}}</span>
+                    <button mat-icon-button aria-label="Increase serving by one" (click)="increaseServing()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                <div class="divider"></div> 
+                </div>
+            }
+            <mat-divider></mat-divider>
+            <h2 class="ingredients-title">Ingredients</h2>
+            @for(section of recipe.sections; track section; let i = $index) {
+                <div class="section">
+                    @if(section.name) {
+                        <h3 class="section-title" >{{section.name}}</h3>
+                    }
+                    <div>
+                        <ul>
+                            @for(ingredient of section.ingredients; track ingredient.name; let j = $index) {
+                                <li class="ingredient-row">
+                                    <input type="checkbox" id="cb-ing-{{i}}-{{j}}" [(ngModel)]="ingredientSelection[i][j]" >
+                                    <label for="cb-ing-{{i}}-{{j}}">
+                                        @if(ingredient.quantity > 0){
+                                            <span>{{ingredient.quantity * servingRation | number: '1.0-1'}}</span>
+                                        }
+                                        <span>{{ingredient.unit}}</span>
+                                        <span class="ingredient-name">{{ingredient.name}}</span>
+                                    </label>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+            <div class="action-buttons">
+                <button mat-flat-button class="shopping-list-button" [disabled]="selectedIngredientNum === 0" (click)="addToShoppingList()">
+                    Add to Shopping List
+                </button>
+                <button mat-stroked-button (click)="normalize()" [disabled]="selectedIngredientNum !== 1">
+                    Normalize
+                </button>
+                <button mat-stroked-button (click)="resetServing()" [disabled]="servingRation == 1">
+                    Reset
+                </button>
+            </div>
+        </div>
+        <div class="directions-part">
+            <h2 class="directions-title">Directions</h2>
+                @for(section of recipe.sections; track section; let i = $index) {
+                    @if(section.name) {
+                        <h3 class="section-title" >{{section.name}}</h3>
+                    }
+                    @for(step of section.directions; track step; let j = $index){
+                        <div [ngClass]="{'selected': (i == selectedDirection.section && j == selectedDirection.direction) }"
+                        class="step hover:bg-base-200"
+                        (click)="selectDirection(i, j)">
+                        <div class="step-number">
+                                <span class="text-lg font-bold text-white">{{j + 1}}</span>
+                        </div> 
+                        <p class="step-text">{{step}}</p>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    }
+    

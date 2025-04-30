@@ -1,0 +1,13 @@
+
+.strip {
+    display: flex;
+    gap: 10px;
+    overflow-x: scroll;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+    .strip-item {
+        scroll-snap-align: start;
+        width: 300px;
+        flex-shrink: 0;
+    }
+}

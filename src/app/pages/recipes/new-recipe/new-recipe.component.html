@@ -1,0 +1,25 @@
+<div class="main-container">
+    <h1 class="title">Add new recipe</h1>
+    <div>
+        <p>You can add a new recipe by either importing it from a website or by adding it manually.</p>
+        <p>The server currently supports the following websites: <span class="font-bold">Nosalty</span></p>
+    </div>
+    <h2 class="title">Import</h2>
+    <div class="import-row">
+        <mat-form-field class="url-input">
+            <mat-label>Url</mat-label>
+            <input  matInput [(ngModel)]="url" type="text"/>
+        </mat-form-field>
+        <button class="import-button" mat-fab extended (click)="importUrl()" [disabled]="importDisabled">
+            @if(loading) {
+                <mat-spinner diameter="20"></mat-spinner>
+            }@else {
+                <span >Import</span>
+            }
+        </button>
+    </div>
+    <p class="error-msg" [class.visible]="error" [ariaHidden]="!error">Import failed!</p>
+    
+    <h2 class="title">Add Manually</h2>
+    <button class="manual-button" mat-flat-button (click)="goToEdit()" >Add</button>
+</div>

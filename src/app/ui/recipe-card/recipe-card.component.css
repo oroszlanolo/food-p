@@ -1,0 +1,19 @@
+.recipe-card {
+    max-width: 400px;
+    .card-header {
+        padding: 10px;
+    }
+    img {
+        aspect-ratio: 3 / 2;
+    }
+    .title {
+        min-height: 5rem;
+    }
+}
+.card-footer {
+    padding: 16px;
+    mat-chip-set {
+        justify-content: end;
+        width: 100%;
+    }
+}

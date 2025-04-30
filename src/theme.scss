@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+$theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette
+  )
+));
+
+.error-button {
+  @include mat.button-color($theme, $color-variant: error);
+}
+.secondary-button {
+  @include mat.button-color($theme, $color-variant: secondary);
+}
+.tertiary-button {
+  @include mat.button-color($theme, $color-variant: tertiary);
+}
+
+.error-icon {
+  @include mat.icon-color($theme, $color-variant: error);
+}
+.primary-icon {
+  @include mat.icon-color($theme, $color-variant: primary);
+}

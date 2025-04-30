@@ -1,0 +1,391 @@
+<div>
+    <h1 class="visually-hidden">Edit Recipe</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="recipeForm" class="p-5">
+        <div class="header">
+            <mat-form-field class="name" appearance="fill">
+                <mat-label>Recipe Title</mat-label>
+                <input formControlName="name" matInput placeholder="Best recipe ever">
+            </mat-form-field>
+            <div class="action-buttons">
+                <button
+                    mat-stroked-button
+                    type="button"
+                    (click)="onCancel()">Cancel</button>
+                <button
+                    mat-flat-button
+                    type="button"
+                    class="error-button"
+                    [disabled]="!loggedIn || !editingExistingRecipe"
+                    (click)="onDelete()">Delete</button>
+                <button
+                    type="submit"
+                    mat-flat-button
+                    [disabled]="!loggedIn">Finish</button>
+            </div>
+        </div>
+        @if (!loggedIn) {
+            <p class="error need-log-in">You need to be logged in to save changes</p>
+        }
+        <mat-tab-group dynamicHeight mat-stretch-tabs="false" selectedIndex="0" mat-align-tabs="start">
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">view_list</mat-icon>
+                    Overview
+                </ng-template>
+                <div class="overview-content">
+                    <div class="overview-left-side">
+                        <div>
+                            <div class="my-5">
+                            <h3 class="text-secondary">Images</h3>
+                                @if(!loggedIn) {
+                                    <p class="text-warning">Cannot add images without logging in.</p>
+                                }
+                            </div>
+                            <input type="file" class="visually-hidden" (change)="addImg($event)" #fileUpload>
+                            <div class="image-container">
+                                @for(source of recipe?.images; track source; let i = $index) {
+                                    <img src="{{recipeServerUrl + 'api/image?id=' + source + '&size=small'}}" alt="img-{{i}}" class="uploaded-image">
+                                }
+                                <div class="upload-button-outline">
+                                    <button mat-icon-button aria-label="image upload button"
+                                        [disabled]="!loggedIn"
+                                        (click)="fileUpload.click()" type="button">
+                                        <mat-icon>
+                                            add_circle
+                                        </mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <mat-form-field class="url-input">
+                                <mat-label>Url</mat-label>
+                                <input formControlName="url" matInput>
+                            </mat-form-field>
+                        </div>
+                        <div class="selects">
+                            <mat-form-field class="select">
+                                <mat-label>Dish Type</mat-label>
+                                <mat-select multiple formControlName="dishType">
+                                  @for (dType of (availableDishTypes | async); track dType) {
+                                    <mat-option  [value]="dType">{{dType}}</mat-option>
+                                  }
+                                </mat-select>
+                            </mat-form-field>
+                            
+                            <mat-form-field>
+                                <mat-label>Difficulty</mat-label>
+                                <mat-select formControlName="difficulty">
+                                <mat-option value="easy">Easy</mat-option>
+                                <mat-option value="intermediate">Intermediate</mat-option>
+                                <mat-option value="expert">Expert</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="select">
+                                <mat-label>When</mat-label>
+                                <mat-select multiple formControlName="when">
+                                  @for (when of (availableWhens | async); track when) {
+                                    <mat-option  [value]="when">{{when | titlecase}}</mat-option>
+                                  }
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field class="select">
+                                <mat-label>Allergens</mat-label>
+                                <mat-select multiple formControlName="allergens">
+                                  @for (allergen of (availableAllergens | async); track allergen) {
+                                    <mat-option  [value]="allergen">{{allergen | titlecase}}</mat-option>
+                                  }
+                                </mat-select>
+                            </mat-form-field>
+
+                            <app-input-complete-chip class="labels" formControlName="labels" inputLabel="Labels" />
+
+                        </div>
+                    </div>
+                    <div class="time-and-cooking">
+                        <h2>Time and Cooking</h2>
+                        <div formGroupName="preparationTime" class="cooking-time" >
+                            <mat-form-field class="time-and-cooking-input" appearance="outline">
+                                <mat-label>Preparation</mat-label>
+                                <input matInput formControlName="preparation" type="number" step="10">
+                                <span matSuffix class="min-label">min</span>
+                            </mat-form-field>
+                            <mat-form-field class="time-and-cooking-input" appearance="outline">
+                                <mat-label>Owen</mat-label>
+                                <input matInput formControlName="owen" type="number" step="10">
+                                <span matSuffix class="min-label">min</span>
+                            </mat-form-field>
+                            <mat-form-field class="time-and-cooking-input" appearance="outline">
+                                <mat-label>Cooking</mat-label>
+                                <input matInput formControlName="cooking" type="number" step="10">
+                                <span matSuffix class="min-label">min</span>
+                            </mat-form-field>
+                            <mat-form-field class="time-and-cooking-input" appearance="outline">
+                                <mat-label>Total</mat-label>
+                                <input matInput formControlName="total" type="number" step="10">
+                                <span matSuffix class="min-label">min</span>
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field class="time-and-cooking-input temperature" appearance="outline">
+                            <mat-label>Owen Temperature</mat-label>
+                            <input matInput formControlName="temperature" type="number" step="10">
+                            <span matSuffix class="min-label">℃</span>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">kitchen</mat-icon>
+                    Ingredients
+                </ng-template>
+                <div class="ingredients-content">
+                    <div class="section-container">
+                        <mat-form-field>
+                            <mat-label>Section</mat-label>
+                            <mat-select class="section-select" [(value)]="selectedSection">
+                                @for(section of sections.controls; track section; let i = $index) {
+                                    <mat-option [value]="i">{{(i + 1) + ". " + section.get('name')!.value}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <div formArrayName="sections">
+                            @for(section of sections.controls; track section; let i = $index) {
+                                @if(i == selectedSection()) {
+                                    <div [formGroupName]="i">
+                                        <mat-form-field appearance="fill" class="section-name-input">
+                                            <mat-label>Section Name</mat-label>
+                                            <input formControlName="name" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="section-buttons">
+                        <button
+                            class="section-header-btn"
+                            mat-icon-button aria-label="Delete Section"
+                            (click)="removeCurrentSection()"
+                            [disabled]="sections.length <= 1"
+                            matTooltip="Delete Section">
+                            <mat-icon [ngClass]="{'error-icon': sections.length > 1}">delete</mat-icon>
+                        </button>
+                        <button
+                            class="section-header-btn"
+                            mat-icon-button aria-label="Move section up"
+                            (click)="moveSectionUp()"
+                            [disabled]="selectedSection() == 0"
+                            matTooltip="Move section up">
+                            <mat-icon>keyboard_arrow_up</mat-icon>
+                        </button>
+                        <button
+                            class="section-header-btn"
+                            mat-icon-button aria-label="Move section up"
+                            (click)="moveSectionDown()"
+                            [disabled]="selectedSection() >= sections.length - 1"
+                            matTooltip="Move section down">
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+                        </div>
+                        <div class="spacer"></div>
+                        <div class="new-section-part">
+                            <mat-form-field appearance="outline" class="new-section-input">
+                                <mat-label>Add New Section</mat-label>
+                                <input [(ngModel)]="newSectionName" [ngModelOptions]="{standalone: true}" matInput >
+                            </mat-form-field>
+                            <div class="add-section-btn-container">
+                                <button
+                                    class="add-section-btn"
+                                    mat-icon-button
+                                    aria-label="Add Section"
+                                    matTooltip="Add Section"
+                                    [disabled]="!newSectionName()"
+                                    (click)="addSection()">
+                                    <mat-icon [ngClass]="{'primary-icon': newSectionName()}">add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="sections" class="ingredients-list">
+                        @for(section of sections.controls; track section; let i = $index) {
+                            @if(selectedSection() == i) {
+                                <div formGroupName="{{i}}">
+                                    <div formArrayName="ingredients">
+                                        @for(ingredient of formHelper.getIngredientsFromSection(section).controls; track ingredient; let j = $index) {
+                                            <div formArrayName="{{j}}" class="ingredient-row">
+                                                <mat-form-field appearance="outline" class="quantity">
+                                                    <mat-label>Quantity</mat-label>
+                                                    <input matInput formControlName="quantity" type="number" step="0.1">
+                                                </mat-form-field>
+                                                <app-input-complete
+                                                    class="unit"
+                                                    formControlName="unit"
+                                                    listName="units"
+                                                    inputLabel="Unit"
+                                                    />
+                                                <app-input-complete
+                                                    class="ingredient-name"
+                                                    formControlName="name"
+                                                    listName="ingredients"
+                                                    inputLabel="Name"
+                                                    />
+                                                <div class="ingredient-buttons">
+                                                    <button
+                                                        mat-icon-button
+                                                        (click)="formHelper.removeIngredient(i, j)"
+                                                        matTooltip="Remove Ingredient"
+                                                        type='button'>
+                                                        <mat-icon class="error-icon">delete</mat-icon>
+                                                    </button>
+                                                    <button
+                                                        mat-icon-button
+                                                        (click)="moveIngredientUp(j)"
+                                                        [disabled]="!ingredientCanBeMovedUp(j)"
+                                                        type='button'>
+                                                        <mat-icon >keyboard_arrow_up</mat-icon>
+                                                    </button>
+                                                    <button
+                                                        mat-icon-button
+                                                        (click)="moveIngredientDown(j)"
+                                                        [disabled]="!ingredientCanBeMovedDown(j)"
+                                                        type='button'>
+                                                        <mat-icon >keyboard_arrow_down</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="center">
+                                            <button mat-flat-button (click)="addIngredientToCurrentSection()" type='button'>
+                                                Add Ingredient
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab>
+                <ng-template mat-tab-label>
+                    <mat-icon class="tab-icon">format_list_numbered</mat-icon>
+                    Directions
+                </ng-template>
+                <div class="directions-content">
+                    <div class="section-container">
+                        <mat-form-field>
+                            <mat-label>Section</mat-label>
+                            <mat-select class="section-select" [(value)]="selectedSection">
+                                @for(section of sections.controls; track section; let i = $index) {
+                                    <mat-option [value]="i">{{(i + 1) + ". " + section.get('name')!.value}}</mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                        <div formArrayName="sections">
+                            @for(section of sections.controls; track section; let i = $index) {
+                                @if(i == selectedSection()) {
+                                    <div [formGroupName]="i">
+                                        <mat-form-field appearance="fill" class="section-name-input">
+                                            <mat-label>Section Name</mat-label>
+                                            <input formControlName="name" matInput>
+                                        </mat-form-field>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="section-buttons">
+                        <button
+                            class="section-header-btn"
+                            mat-icon-button aria-label="Delete Section"
+                            (click)="removeCurrentSection()"
+                            [disabled]="sections.length <= 1"
+                            matTooltip="Delete Section">
+                            <mat-icon [ngClass]="{'error-icon': sections.length > 1}">delete</mat-icon>
+                        </button>
+                        <button
+                            class="section-header-btn"
+                            mat-icon-button aria-label="Move section up"
+                            (click)="moveSectionUp()"
+                            [disabled]="selectedSection() == 0"
+                            matTooltip="Move section up">
+                            <mat-icon>keyboard_arrow_up</mat-icon>
+                        </button>
+                        <button
+                            class="section-header-btn"
+                            mat-icon-button aria-label="Move section up"
+                            (click)="moveSectionDown()"
+                            [disabled]="selectedSection() >= sections.length - 1"
+                            matTooltip="Move section down">
+                            <mat-icon>keyboard_arrow_down</mat-icon>
+                        </button>
+                        </div>
+                        <div class="spacer"></div>
+                        <div class="new-section-part">
+                            <mat-form-field appearance="outline" class="new-section-input">
+                                <mat-label>Add New Section</mat-label>
+                                <input [(ngModel)]="newSectionName" [ngModelOptions]="{standalone: true}" matInput >
+                            </mat-form-field>
+                            <div class="add-section-btn-container">
+                                <button
+                                    class="add-section-btn"
+                                    mat-icon-button
+                                    aria-label="Add Section"
+                                    matTooltip="Add Section"
+                                    [disabled]="!newSectionName()"
+                                    (click)="addSection()">
+                                    <mat-icon [ngClass]="{'primary-icon': newSectionName()}">add</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div formGroupName="sections" class="directions-list">
+                        @for(section of sections.controls; track section; let i = $index) {
+                            @if(selectedSection() == i) {
+                                <div formGroupName="{{i}}">
+                                    <div formArrayName="directions">
+                                        @for(direction of formHelper.getDirectionsFromSection(section).controls; track direction; let j = $index) {
+                                            <div class="direction-row">
+                                                <mat-form-field appearance="outline" class="direction">
+                                                    <mat-label>{{'Step ' + (j + 1)}}</mat-label>
+                                                    <textarea matInput formControlName="{{j}}" type="text" ></textarea>
+                                                </mat-form-field>
+                                                <div class="direction-buttons">
+                                                    <button
+                                                        mat-icon-button
+                                                        (click)="moveDirectionUp(j)"
+                                                        [disabled]="!directionCanBeMovedUp(j)"
+                                                        type='button'>
+                                                        <mat-icon >keyboard_arrow_up</mat-icon>
+                                                    </button>
+                                                    <button
+                                                        mat-icon-button
+                                                        (click)="moveDirectionDown(j)"
+                                                        [disabled]="!directionCanBeMovedDown(j)"
+                                                        type='button'>
+                                                        <mat-icon >keyboard_arrow_down</mat-icon>
+                                                    </button>
+                                                    <button
+                                                        mat-icon-button
+                                                        (click)="removeDirection(j)"
+                                                        matTooltip="Remove Direction"
+                                                        type='button'>
+                                                        <mat-icon class="error-icon">delete</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        }
+                                        <button mat-flat-button (click)="addDirectionToCurrentSection()" type='button'>
+                                            Add Direction
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </form>
+</div>

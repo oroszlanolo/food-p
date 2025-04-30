@@ -1,0 +1,11 @@
+.strip-section {
+    margin-top: 20px;
+    .strip-title-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        h2 {
+            margin: 0;
+        }
+    }
+}

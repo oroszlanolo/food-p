@@ -1,0 +1,26 @@
+<h1>Home Page</h1>
+@for(homeStrip of homeStrips; track homeStrip.title; let i = $index) {
+    <section class="strip-section">
+        <div class="strip-title-row">
+            <h2>{{homeStrip.title}}</h2>
+            <div class="move-btns">
+                <button
+                    mat-icon-button
+                    aria-label="move section up"
+                    [disabled]="i === 0"
+                    (click)="moveUp(i)">
+                        <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button
+                    mat-icon-button
+                    aria-label="move section down"
+                    [disabled]="i >= homeStrips.length - 1"
+                    [class.!bg-transparent]="i >= homeStrips.length - 1"
+                    (click)="moveDown(i)">
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+            </div>
+        </div>
+        <app-recipe-strip [homeType]="homeStrip.type"></app-recipe-strip>
+    </section>
+}

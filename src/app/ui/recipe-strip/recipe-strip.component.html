@@ -1,0 +1,9 @@
+@if(recipes().length > 0) {
+    <div class="strip-outer">
+        <div class="strip">
+            @for(recipe of recipes(); track recipe.name) {
+                <app-recipe-card [recipe]="recipe" class="strip-item"></app-recipe-card>
+            }
+        </div>
+    </div>
+}
