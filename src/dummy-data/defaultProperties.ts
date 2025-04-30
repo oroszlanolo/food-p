@@ -45,13 +45,7 @@ export const defaultProperties = {
     'savanyú',
     'keserű',
   ],
-  allergens: [
-    'gluten-free',
-    'lactose-free',
-    'dairy-free',
-    'egg-free',
-    'sugar-free',
-  ],
+  allergens: ['gluten-free', 'lactose-free', 'dairy-free', 'egg-free', 'sugar-free'],
   dishTypes: [
     'main_dish',
     'soup',
@@ -64,16 +58,5 @@ export const defaultProperties = {
     'other_course',
   ],
   whens: ['breakfast', 'lunch', 'dinner', 'snack', 'always'],
-  ingredients: [
-    'csirkemell',
-    'rizs',
-    'paradicsom',
-    'hagyma',
-    'fokhagyma',
-    'olaj',
-    'só',
-    'bors',
-    'paprika',
-    'tejföl',
-  ]
+  ingredients: ['csirkemell', 'rizs', 'paradicsom', 'hagyma', 'fokhagyma', 'olaj', 'só', 'bors', 'paprika', 'tejföl'],
 };
