@@ -102,6 +102,29 @@
 
               <app-input-complete-chip class="labels" formControlName="labels" inputLabel="Labels" />
             </div>
+            <h3>Nutrition</h3>
+            <div formGroupName="nutrition" class="nutrition">
+              <mat-form-field appearance="outline">
+                <mat-label>Calories</mat-label>
+                <input matInput formControlName="calories" type="number" step="10" />
+                <span matSuffix class="min-label">cal</span>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Protein</mat-label>
+                <input matInput formControlName="protein" type="number" step="10" />
+                <span matSuffix class="min-label">g</span>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Fat</mat-label>
+                <input matInput formControlName="fat" type="number" step="10" />
+                <span matSuffix class="min-label">g</span>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Carbs</mat-label>
+                <input matInput formControlName="carbs" type="number" step="10" />
+                <span matSuffix class="min-label">g</span>
+              </mat-form-field>
+            </div>
           </div>
           <div class="time-and-cooking">
             <h2>Time and Cooking</h2>
@@ -132,6 +155,32 @@
               <input matInput formControlName="temperature" type="number" step="10" />
               <span matSuffix class="min-label">℃</span>
             </mat-form-field>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">view_list</mat-icon>
+          Info
+        </ng-template>
+        <div class="info-content">
+          <mat-form-field class="full">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput></textarea>
+          </mat-form-field>
+
+          <h3>Tips</h3>
+          <div formArrayName="tips" class="tips">
+            @for (tip of formHelper.tips.controls; track tip; let i = $index) {
+              <mat-form-field appearance="fill" class="tip">
+                <mat-label>Tip {{ i + 1 }}</mat-label>
+                <input [formControlName]="i" matInput />
+              </mat-form-field>
+            }
+          </div>
+
+          <div class="center">
+            <button mat-flat-button (click)="addTip()" type="button">Add Tip</button>
           </div>
         </div>
       </mat-tab>

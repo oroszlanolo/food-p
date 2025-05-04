@@ -82,6 +82,7 @@ export class EditRecipeComponent implements OnInit {
   recipeForm: FormGroup<FormGroupControls> = this.fb.group({
     name: ['', Validators.required],
     serving: [0, Validators.required],
+    description: '',
     url: '',
     difficulty: 'easy',
     dishType: '',
@@ -102,6 +103,13 @@ export class EditRecipeComponent implements OnInit {
         directions: this.fb.array<string>([]),
       }),
     ]),
+    tips: this.fb.array<string>([]),
+    nutrition: this.fb.group({
+      calories: 0,
+      fat: 0,
+      carbs: 0,
+      protein: 0,
+    }),
   });
 
   formHelper!: FormHelper;
@@ -179,6 +187,10 @@ export class EditRecipeComponent implements OnInit {
     this.formHelper.moveDirectionDown(this.selectedSection(), i);
   }
 
+  addTip() {
+    this.formHelper.addTip();
+  }
+
   ngOnInit(): void {
     const preparationTimeGroup = this.recipeForm.get('preparationTime') as FormGroup;
 
@@ -254,7 +266,7 @@ export class EditRecipeComponent implements OnInit {
   onSubmit() {
     this.formHelper.updateRecipeFromForm();
     console.log(this.recipe);
-    // this.addRecipe();
+    this.addRecipe();
   }
 
   onCancel() {

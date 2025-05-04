@@ -36,6 +36,9 @@ export class FormHelper {
   get labels() {
     return this.form.get('labels') as FormControl;
   }
+  get tips() {
+    return this.form.get('tips') as FormArray;
+  }
 
   getIngredientsFromSection(section: AbstractControl<unknown, unknown>) {
     return section.get('ingredients') as FormArray;
@@ -184,10 +187,17 @@ export class FormHelper {
     }
   }
 
+  addTip(tip = '') {
+    this.tips.push(this.fb.control(tip));
+  }
+
   updateRecipeForm() {
     if (this.recipe) {
       console.log(this.recipe);
       this.form.get('name')?.setValue(this.recipe.name);
+      if (this.recipe.description) {
+        this.form.get('description')?.setValue(this.recipe.description);
+      }
       this.form.get('serving')?.setValue(this.recipe.serving);
       const diffControl = this.form.get('difficulty');
       diffControl?.setValue(this.recipe.difficulty);
@@ -227,6 +237,25 @@ export class FormHelper {
           this.addDirection(i, direction);
         }
       }
+
+      if (this.recipe.tips) {
+        for (const tip of this.recipe.tips) {
+          this.tips.push(this.fb.control(tip));
+        }
+      }
+
+      if (this.recipe.nutrition.calories) {
+        this.form.get('nutrition')?.get('calories')?.setValue(this.recipe.nutrition.calories);
+      }
+      if (this.recipe.nutrition.carbs) {
+        this.form.get('nutrition')?.get('carbs')?.setValue(this.recipe.nutrition.carbs);
+      }
+      if (this.recipe.nutrition.fat) {
+        this.form.get('nutrition')?.get('fat')?.setValue(this.recipe.nutrition.fat);
+      }
+      if (this.recipe.nutrition.protein) {
+        this.form.get('nutrition')?.get('protein')?.setValue(this.recipe.nutrition.protein);
+      }
     }
   }
   updateRecipeFromForm() {
@@ -236,6 +265,8 @@ export class FormHelper {
       if (name != null) this.recipe.name = name;
       const serving = this.form.get('serving')!.value;
       if (serving != null) this.recipe.serving = serving;
+      const description = this.form.get('description')!.value;
+      if (description != null) this.recipe.description = description;
 
       this.recipe.difficulty = this.difficulty as Difficulty;
 
@@ -267,8 +298,19 @@ export class FormHelper {
       const temperature = this.form.get('temperature')?.value;
       if (temperature != null && temperature != 0) this.recipe.temperature = temperature;
 
+      const calories = this.form.get('nutrition')?.get('calories')?.value;
+      if (calories != null && calories != 0) this.recipe.nutrition.calories = calories;
+      const carbs = this.form.get('nutrition')?.get('carbs')?.value;
+      if (carbs != null && carbs != 0) this.recipe.nutrition.carbs = carbs;
+      const fat = this.form.get('nutrition')?.get('fat')?.value;
+      if (fat != null && fat != 0) this.recipe.nutrition.fat = fat;
+      const protein = this.form.get('nutrition')?.get('protein')?.value;
+      if (protein != null && protein != 0) this.recipe.nutrition.protein = protein;
+
       const sections: Section[] = this.sections.value;
       this.recipe.sections = sections;
+
+      this.recipe.tips = (this.tips.value as string[]).map((t) => t.trim()).filter((t) => t.length > 0);
     }
   }
 }
