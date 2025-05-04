@@ -11,6 +11,7 @@
               routerLinkActive
               #rla="routerLinkActive"
               [activated]="rla.isActive"
+              (click)="drawerOpened.set(false)"
               >{{ navItem.title }}</a
             >
           }
