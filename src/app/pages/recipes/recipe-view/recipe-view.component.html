@@ -15,15 +15,28 @@
       }
       <div class="quick-info-section">
         <div class="quick-info">
-          <mat-icon class="quick-info-icon">schedule</mat-icon>
-          <span class="quick-info-text"> {{ recipe.preparationTime.total }} min </span>
-        </div>
-        <div class="quick-info">
           <mat-icon class="quick-info-icon">speed</mat-icon>
           <span class="quick-info-text">
             {{ recipe.difficulty | titlecase }}
           </span>
         </div>
+        @if (recipe.preparationTime.total !== undefined) {
+          <div class="quick-info preparation-quick-info">
+            <mat-icon class="quick-info-icon">schedule</mat-icon>
+            <span class="quick-info-text"> {{ recipe.preparationTime.total }} min </span>
+            <div class="preparation-container">
+              <p class="prep-row">Preparation: {{ recipe.preparationTime.preparation ?? 0 }} min</p>
+              <p class="prep-row">Cooking: {{ recipe.preparationTime.cooking ?? 0 }} min</p>
+              <p class="prep-row">Owen: {{ recipe.preparationTime.owen ?? 0 }} min</p>
+            </div>
+          </div>
+        }
+        @if (recipe.temperature !== undefined) {
+          <div class="quick-info">
+            <mat-icon class="quick-info-icon">thermostat</mat-icon>
+            <span class="quick-info-text"> {{ recipe.temperature }} °C</span>
+          </div>
+        }
       </div>
       <mat-divider></mat-divider>
     </div>
@@ -89,8 +102,57 @@
         <button mat-stroked-button (click)="normalize()" [disabled]="selectedIngredientNum !== 1">Normalize</button>
         <button mat-stroked-button (click)="resetServing()" [disabled]="servingRation === 1">Reset</button>
       </div>
+      @if (hasNutrition) {
+        <div class="nutrition">
+          @if (recipe.nutrition?.calories) {
+            <div class="calories">{{ recipe.nutrition?.calories }}<span> Calories</span></div>
+          }
+          <div class="nutrition-row">
+            @if (recipe.nutrition?.protein) {
+              <div class="nutrition-item">
+                <div class="nutrition-name">Protein</div>
+                <span>{{ recipe.nutrition?.protein }} g</span>
+              </div>
+            }
+            @if (recipe.nutrition?.carbs) {
+              <div class="divider"></div>
+              <div class="nutrition-item">
+                <div class="nutrition-name">Carbs</div>
+                <span>{{ recipe.nutrition?.carbs }} g</span>
+              </div>
+            }
+            @if (recipe.nutrition?.fat) {
+              <div class="divider"></div>
+              <div class="nutrition-item">
+                <div class="nutrition-name">Fat</div>
+                <span>{{ recipe.nutrition?.fat }} g</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
     </div>
     <div class="directions-part">
+      @if (recipe.description !== undefined) {
+        <div class="description">{{ recipe.description }}</div>
+      }
+      @if (recipe.tips?.length ?? 0 > 0) {
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title> Tips </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="tips">
+              @for (tip of recipe.tips; track tip) {
+                <div class="tip">
+                  <mat-icon class="quick-info-icon">trip_origin</mat-icon>
+                  <p>{{ tip }}</p>
+                </div>
+              }
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      }
       <h2 class="directions-title">Directions</h2>
       @for (section of recipe.sections; track section; let i = $index) {
         @if (section.name) {

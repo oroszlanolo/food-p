@@ -1,171 +1,259 @@
 @use '@angular/material' as mat;
 @use '../../../../theme' as theme;
+@use '../../../../styles.scss';
 
 .recipe-container {
-    display: grid;
-    grid-template-columns: 70% 30%;
-    gap: 25px;
+  display: grid;
+  grid-template-columns: calc(70% - 25px) 30%;
+  gap: 25px;
 
-    @media(width < 600px) {
-        grid-template-columns: 1fr;
-    }
+  @media (width < 800px) {
+    grid-template-columns: 1fr;
+  }
 
-    .ingredients-part {
-        grid-row: span 2;
-    }
+  .ingredients-part {
+    grid-row: span 2;
+  }
 }
 
 .hero {
-    .title {
-        text-align: center;
-        margin-bottom: 30px;
+  .title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .main-image {
+    width: 100%;
+    aspect-ratio: 1.5;
+    cursor: pointer;
+    &:hover {
+      box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
+    }
+  }
+  .placeholder-image {
+    width: 50%;
+    margin: auto;
+  }
+
+  .quick-info-section {
+    margin-block: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    .quick-info {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    .main-image {
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.1);
-        }
-    }
-    .placeholder-image {
-        width: 50%;
-        margin: auto;
+    .quick-info-text {
+      font-weight: 500;
     }
 
-    .quick-info-section {
-        margin-block: 20px;
+    .quick-info-icon {
+      --size: 2.5rem;
+      font-size: var(--size);
+      height: var(--size);
+      width: var(--size);
+      color: mat.get-theme-color(theme.$theme, primary, 40);
+    }
+
+    .preparation-quick-info {
+      position: relative;
+
+      .preparation-container {
+        position: absolute;
+        left: 50%;
+        translate: -50% 10px;
+        top: 100%;
+        width: 200px;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-evenly;
-
-        .quick-info {
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        gap: 5px;
+        padding-block: 15px;
+        z-index: 9999;
+        background-color: var(--mat-app-background-color);
+        box-shadow:
+          0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+          0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+          0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+        border-radius: 10px;
+        * {
+          margin: 0;
         }
-
-        .quick-info-text {
-            font-weight: 500;
-        }
-
-        .quick-info-icon {
-            --size: 2.5rem;
-            font-size: var(--size);
-            height: var(--size);
-            width: var(--size);
-            color: mat.get-theme-color(theme.$theme, primary, 40);
+      }
+      &:not(:hover) .preparation-container {
+        @extend .visually-hidden;
+      }
     }
-    }
-    
+  }
 }
 
 .ingredients-part {
-    .actions-menu {
-        display: flex;
-        justify-content: end;
-        width: 100%;
-    }
+  .actions-menu {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    margin-top: 20px;
+  }
 
-    .serving-part {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin-block: 10px;
-        @media(width > 600px) {
-            margin-top: 30px
-        }
-        .serving-label {
-            font-size: 1.5rem;
-        }
-        .serving-text {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-    }
-
-    .ingredients-title {
-        
-        color: mat.get-theme-color(theme.$theme, primary, 40);
-    }
-
-    .section {
-        font-size: 1.125rem;
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 500;
-            line-height: 25%;
-            margin-top: 25px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding-left: 10px;
-            input {
-                margin-right: 8px;
-            }
-            li > * {
-                cursor: pointer;
-            }
-            li > label > span {
-                margin-right: 3px;
-            }
-            .ingredient-name {
-                font-weight: 500;
-                color: mat.get-theme-color(theme.$theme, tertiary, 60);
-            }
-        }
-    }
-}
-.action-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .serving-part {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
-    .shopping-list-button {
-        grid-column: span 2;
+    margin-block: 10px;
+    @media (width > 600px) {
+      margin-top: 30px;
     }
+    .serving-label {
+      font-size: 1.5rem;
+    }
+    .serving-text {
+      font-size: 2rem;
+      font-weight: bold;
+    }
+  }
+
+  .ingredients-title {
+    color: mat.get-theme-color(theme.$theme, primary, 40);
+  }
+
+  .section {
+    font-size: 1.125rem;
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 25%;
+      margin-top: 25px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 10px;
+      input {
+        margin-right: 8px;
+      }
+      li > * {
+        cursor: pointer;
+      }
+      li > label > span {
+        margin-right: 3px;
+      }
+      .ingredient-name {
+        font-weight: 500;
+        color: mat.get-theme-color(theme.$theme, tertiary, 60);
+      }
+    }
+  }
+
+  .nutrition {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+    background-color: mat.get-theme-color(theme.$theme, secondary, 90);
+    padding-block: 15px;
+    border-radius: 5px;
+
+    .nutrition-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      width: 100%;
+
+      .nutrition-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .divider {
+        background-color: mat.get-theme-color(theme.$theme, neutral, 0);
+        width: 1px;
+        height: 15px;
+      }
+    }
+  }
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  .shopping-list-button {
+    grid-column: span 2;
+  }
 }
 
 .directions-part {
-    margin-block-end: 40px;
-    .directions-title {
-        color: mat.get-theme-color(theme.$theme, primary, 40);
-        font-weight: bold;
+  margin-block-end: 40px;
+  .directions-title {
+    color: mat.get-theme-color(theme.$theme, primary, 40);
+    font-weight: bold;
+    margin-top: 30px;
+  }
+  .section-title {
+    font-weight: 500;
+  }
+
+  .description {
+    margin-bottom: 15px;
+  }
+
+  .tips {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    .tip {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      :first-child {
+        flex-shrink: 0;
+      }
+      p {
+        margin: 0;
+        font-size: 1.125rem;
+      }
     }
-    .section-title {
-        font-weight: 500;
-    }
-    .step {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 10px;
-        margin-top: 10px;
-        align-items: start;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
+  }
 
-        .step-text {
-            font-size: 1.125rem;
-            margin: 0;
-        }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: start;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
 
-        .step-number {
-            width: 30px;
-            display: grid;
-            place-items: center;
-            aspect-ratio: 1;
-            background-color: mat.get-theme-color(theme.$theme, neutral, 40);
-            border-radius: 50%;
-            color: white;
-            font-size: 1.25rem;;
-        }
-
-        &:hover ,
-        &.selected {
-            background-color: mat.get-theme-color(theme.$theme, neutral, 90);
-        }
+    .step-text {
+      font-size: 1.125rem;
+      margin: 0;
     }
 
+    .step-number {
+      width: 30px;
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      background-color: mat.get-theme-color(theme.$theme, neutral, 40);
+      border-radius: 50%;
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    &:hover,
+    &.selected {
+      background-color: mat.get-theme-color(theme.$theme, neutral, 90);
+    }
+  }
 }

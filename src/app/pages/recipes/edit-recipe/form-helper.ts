@@ -244,16 +244,16 @@ export class FormHelper {
         }
       }
 
-      if (this.recipe.nutrition.calories) {
+      if (this.recipe.nutrition?.calories) {
         this.form.get('nutrition')?.get('calories')?.setValue(this.recipe.nutrition.calories);
       }
-      if (this.recipe.nutrition.carbs) {
+      if (this.recipe.nutrition?.carbs) {
         this.form.get('nutrition')?.get('carbs')?.setValue(this.recipe.nutrition.carbs);
       }
-      if (this.recipe.nutrition.fat) {
+      if (this.recipe.nutrition?.fat) {
         this.form.get('nutrition')?.get('fat')?.setValue(this.recipe.nutrition.fat);
       }
-      if (this.recipe.nutrition.protein) {
+      if (this.recipe.nutrition?.protein) {
         this.form.get('nutrition')?.get('protein')?.setValue(this.recipe.nutrition.protein);
       }
     }
@@ -298,6 +298,9 @@ export class FormHelper {
       const temperature = this.form.get('temperature')?.value;
       if (temperature != null && temperature != 0) this.recipe.temperature = temperature;
 
+      if (this.recipe.nutrition === undefined) {
+        this.recipe.nutrition = {};
+      }
       const calories = this.form.get('nutrition')?.get('calories')?.value;
       if (calories != null && calories != 0) this.recipe.nutrition.calories = calories;
       const carbs = this.form.get('nutrition')?.get('carbs')?.value;

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
@@ -18,7 +19,16 @@ import { ConfirmationDialogComponent } from '../../../ui/dialog/confirmation-dia
 @Component({
   selector: 'app-recipe-view',
   standalone: true,
-  imports: [DecimalPipe, NgClass, TitleCasePipe, FormsModule, MatButtonModule, MatIconModule, MatDividerModule],
+  imports: [
+    DecimalPipe,
+    NgClass,
+    TitleCasePipe,
+    FormsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    MatExpansionModule,
+  ],
   templateUrl: './recipe-view.component.html',
   styleUrl: './recipe-view.component.scss',
 })
@@ -53,6 +63,15 @@ export class RecipeViewComponent implements OnInit {
     return this.ingredientSelection.reduce(
       (prev, curr) => prev || curr.reduce((prev, curr) => curr || prev, false),
       false,
+    );
+  }
+  get hasNutrition() {
+    if (!this.recipe?.nutrition) return false;
+    return (
+      this.recipe.nutrition.calories ||
+      this.recipe.nutrition.carbs ||
+      this.recipe.nutrition.fat ||
+      this.recipe.nutrition.protein
     );
   }
 

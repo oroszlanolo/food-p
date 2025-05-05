@@ -58,8 +58,8 @@ export interface Recipe {
   url?: string;
   temperature?: number;
   description?: string;
-  tips: string[];
-  nutrition: Nutrition;
+  tips?: string[];
+  nutrition?: Nutrition;
 }
 
 export function getDefaultRecipe(): Recipe {
